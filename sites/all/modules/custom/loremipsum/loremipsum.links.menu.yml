@@ -1,0 +1,6 @@
+loremipsum.admin:
+  title: 'Lorem Ipsum settings'
+  description: '[description]'
+  parent: system.admin_config_development
+  route_name: loremipsum.form
+  weight: 100

@@ -29,7 +29,7 @@ use Drupal\Core\Form\FormStateInterface;
       $name = $this->t('to no one');
     }
     return array(
-      '#markup' => $this->t('Hello @name!', array (
+      '#markup' => $this->t('Hello, @name!', array (
           '@name' => $name,
         )
       ),
@@ -45,11 +45,9 @@ use Drupal\Core\Form\FormStateInterface;
      $config = $this->getConfiguration();
 
      $form['hello_block_name'] = array (
-     //$form['hello_block_settings'] = array (
        '#type' => 'textfield',
        '#title' => $this->t('Who'),
        '#description' => $this->t('Who do you want to say hello to?'),
-       //'#default_value' => isset($config['hello_block_settings']) ? $config['hello_block_settings'] : ''
        '#default_value' => isset($config['name']) ? $config['name'] : ''
      );
 

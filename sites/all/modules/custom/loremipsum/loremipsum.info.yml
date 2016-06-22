@@ -1,0 +1,7 @@
+name: Lorem ipsum
+description: Lorem Ipsum generator
+package: Custom
+
+type: module
+core: 8.x
+configure: loremipsum.form
