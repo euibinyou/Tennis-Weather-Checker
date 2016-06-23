@@ -58,6 +58,13 @@ class TennisWeatherController {
         $element['#database_test'][] = SafeMarkup::checkPlain($value);
       }
 
+      $json_string = file_get_contents("http://api.wunderground.com/api/bb27100d1b9656be/geolookup/conditions/q/FL/Orlando.json");
+      $parsed_json = json_decode($json_string);
+      $location = $parsed_json->{'location'}->{'city'};
+      $temp_f = $parsed_json->{'current_observation'}->{'temp_f'};
+      $element['#weatherAPI_test'][] = SafeMarkup::checkPlain('Location: ' . $location);
+      $element['#weatherAPI_test'][] = SafeMarkup::checkPlain('temperature: ' . $temp_f);
+
       return $element;
   }
 }

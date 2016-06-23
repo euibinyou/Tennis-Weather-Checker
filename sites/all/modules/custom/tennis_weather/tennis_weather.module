@@ -23,7 +23,8 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
       'variables' => array( 'subheading' => NULL,
                             'summary' => NULL,
                             'weather_text' => NULL,
-                            'database_test' => NULL, ),
+                            'database_test' => NULL,
+                            'weatherAPI_test' => NULL),
       'template' => 'tennis_weather',
     ),
   );

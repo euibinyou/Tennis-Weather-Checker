@@ -13,10 +13,17 @@
 <strong>{{ subheading }}</strong>
 <div>
 <p>{{ summary }}</p>
-</div>
-<div>
 <em>{{ weather_text }}</em>
+</div>
+<strong>MySQL</strong>
+<div>
 {% for item in database_test %}
+  <p>{{ item }}</p>
+{% endfor %}
+</div>
+<strong>Weather API</strong>
+<div>
+{% for item in weatherAPI_test %}
   <p>{{ item }}</p>
 {% endfor %}
 </div>
