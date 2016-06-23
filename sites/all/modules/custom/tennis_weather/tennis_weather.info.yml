@@ -1,0 +1,7 @@
+name: Tennis Weather Checker
+description: Show weather conditions and forecast to determine optimum tennis-playing times
+package: Custom
+
+type: module
+core: 8.x
+configure: tennis_weather.form

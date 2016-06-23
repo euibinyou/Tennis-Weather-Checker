@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Default theme implementation for Tennis Weather Checker.
+ *
+ * Available variables:
+ *   - subheading
+ *   - summary
+ *   - weather_text
+ * @ingroup themeable
+ */
+#}
+<strong>{{ subheading }}</strong>
+<div>
+<p>{{ summary }}</p>
+</div>
+<div>
+<em>{{ weather_text }}</em>
+{% for item in database_test %}
+  <p>{{ item }}</p>
+{% endfor %}
+</div>

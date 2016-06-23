@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function tennis_weather_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.tennis_weather':
+      //TODO write help page content
+      //(see Drupal\loremipsum\loremipsum.module for reference)
+      return t('<h2>[TITLE]</h2><p>[CONTENT]');
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tennis_weather_theme($existing, $type, $theme, $path) {
+  $variables = array(
+    'tennis_weather' => array(
+      'variables' => array( 'subheading' => NULL,
+                            'summary' => NULL,
+                            'weather_text' => NULL,
+                            'database_test' => NULL, ),
+      'template' => 'tennis_weather',
+    ),
+  );
+  return $variables;
+}

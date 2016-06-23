@@ -1,0 +1,14 @@
+tennis_weather.content:
+  path: 'tennis_weather/{zip}'
+  defaults:
+    _controller: '\Drupal\tennis_weather\Controller\TennisWeatherController::content'
+  requirements:
+    _permission: 'check weather'
+
+tennis_weather.form:
+  path: '/admin/config/development/tennis_weather'
+  defaults:
+    _form: 'Drupal\tennis_weather\Form\TennisWeatherForm'
+    _title: 'Tennis Weather Checker settings'
+  requirements:
+    _permission: 'administer site configuration'
