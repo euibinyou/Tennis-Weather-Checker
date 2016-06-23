@@ -1,7 +1,7 @@
 <?php
 
-/* sites/all/modules/custom/loremipsum/templates/loremipsum.html.twig */
-class __TwigTemplate_9aa37bdb6db4552542c0d9d00ab642d005f6c9d16317ad7c2b7c981fc2d9142b extends Twig_Template
+/* sites/all/modules/custom/tennis_weather/templates/tennis_weather.html.twig */
+class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6fc084 extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
     {
@@ -15,7 +15,7 @@ class __TwigTemplate_9aa37bdb6db4552542c0d9d00ab642d005f6c9d16317ad7c2b7c981fc2d
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $tags = array("for" => 15);
+        $tags = array("for" => 19);
         $filters = array();
         $functions = array();
 
@@ -39,14 +39,27 @@ class __TwigTemplate_9aa37bdb6db4552542c0d9d00ab642d005f6c9d16317ad7c2b7c981fc2d
             throw $e;
         }
 
-        // line 14
-        echo "<div class=\"loremipsum\">
-";
+        // line 13
+        echo "<strong>";
+        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["subheading"]) ? $context["subheading"] : null), "html", null, true));
+        echo "</strong>
+<div>
+<p>";
         // line 15
+        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["summary"]) ? $context["summary"] : null), "html", null, true));
+        echo "</p>
+</div>
+<div>
+<em>";
+        // line 18
+        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["weather_text"]) ? $context["weather_text"] : null), "html", null, true));
+        echo "</em>
+";
+        // line 19
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["source_text"]) ? $context["source_text"] : null));
+        $context['_seq'] = twig_ensure_traversable((isset($context["database_test"]) ? $context["database_test"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
-            // line 16
+            // line 20
             echo "  <p>";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["item"], "html", null, true));
             echo "</p>
@@ -55,14 +68,14 @@ class __TwigTemplate_9aa37bdb6db4552542c0d9d00ab642d005f6c9d16317ad7c2b7c981fc2d
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 18
+        // line 22
         echo "</div>
 ";
     }
 
     public function getTemplateName()
     {
-        return "sites/all/modules/custom/loremipsum/templates/loremipsum.html.twig";
+        return "sites/all/modules/custom/tennis_weather/templates/tennis_weather.html.twig";
     }
 
     public function isTraitable()
@@ -72,24 +85,28 @@ class __TwigTemplate_9aa37bdb6db4552542c0d9d00ab642d005f6c9d16317ad7c2b7c981fc2d
 
     public function getDebugInfo()
     {
-        return array (  59 => 18,  50 => 16,  46 => 15,  43 => 14,);
+        return array (  72 => 22,  63 => 20,  59 => 19,  55 => 18,  49 => 15,  43 => 13,);
     }
 }
 /* {#*/
 /* /***/
 /*  * @file*/
-/*  * Default theme implementation to print Lorem ipsum text.*/
+/*  * Default theme implementation for Tennis Weather Checker.*/
 /*  **/
 /*  * Available variables:*/
-/*  *   - source_text*/
-/*  **/
-/*  * @see template_preprocess_loremipsum()*/
-/*  **/
+/*  *   - subheading*/
+/*  *   - summary*/
+/*  *   - weather_text*/
 /*  * @ingroup themeable*/
 /*  *//* */
 /* #}*/
-/* <div class="loremipsum">*/
-/* {% for item in source_text %}*/
+/* <strong>{{ subheading }}</strong>*/
+/* <div>*/
+/* <p>{{ summary }}</p>*/
+/* </div>*/
+/* <div>*/
+/* <em>{{ weather_text }}</em>*/
+/* {% for item in database_test %}*/
 /*   <p>{{ item }}</p>*/
 /* {% endfor %}*/
 /* </div>*/
