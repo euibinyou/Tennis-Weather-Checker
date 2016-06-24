@@ -35,7 +35,7 @@ class TennisWeatherController {
       $element['#current_icon'] = SafeMarkup::checkPlain('http://icons.wxug.com/i/c/j/' . $parsed_json->{'current_observation'}->{'icon'} . '.gif');
       $element['#current_cond']['text'] = SafeMarkup::checkPlain($parsed_json->{'current_observation'}->{'weather'});
       $element['#current_cond']['temp'] = SafeMarkup::checkPlain($parsed_json->{'current_observation'}->{'temp_f'});
-      $element['#current_cond']['precip'] = SafeMarkup::checkPlain('wind: ' . $parsed_json->{'current_observation'}->{'wind_mph'});
+      $element['#current_cond']['precip'] = SafeMarkup::checkPlain($parsed_json->{'current_observation'}->{'wind_mph'});
       $element['#timestamp'] = SafeMarkup::checkPlain('Updated: ' . $parsed_json->{'current_observation'}->{'local_time_rfc822'});
 
       $current_time = $parsed_json->{'hourly_forecast'}[0]->{'FCTTIME'}->{'hour'};
@@ -98,9 +98,8 @@ class TennisWeatherController {
         continue;
       }
 
-      $count++;
       $forecast[] = $json->{'hourly_forecast'}[$i];
-
+      $count++;
       // Return once we have all the hours we want
       if ($count == $future_count) {
         return $forecast;
@@ -136,7 +135,7 @@ class TennisWeatherController {
     }
     elseif ($current_time <= $start_time) {
       // If earlier than start time, return number of hours to forecast for start time to end time (same day)
-      $offset =  $start_time - $current_time;
+      $offset =  $start_time - $current_time - 1;
     }
     $future_count = $end_time - $start_time + 1;
     return array($future_count, $offset);
