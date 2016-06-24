@@ -22,8 +22,12 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
     'tennis_weather' => array(
       'variables' => array( 'subheading' => NULL,
                             'summary' => NULL,
-                            'weather_text' => NULL,
-                            'database_test' => NULL, ),
+                            'database_test' => NULL,
+                            'current_cond' => NULL,
+                            'timestamp' => NULL,
+                            'forecast' => NULL,
+                            'current_icon' => NULL,
+                            'debug_info' => NULL, ),
       'template' => 'tennis_weather',
     ),
   );

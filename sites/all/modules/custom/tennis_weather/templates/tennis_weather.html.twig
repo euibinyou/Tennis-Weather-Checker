@@ -10,13 +10,35 @@
  * @ingroup themeable
  */
 #}
-<strong>{{ subheading }}</strong>
+<h1><strong>{{ subheading }}</strong><h1>
 <div>
 <p>{{ summary }}</p>
 </div>
 <div>
-<em>{{ weather_text }}</em>
+<strong>Current conditions</strong>
+<br />
+{{ current_cond.text }}&emsp;<img src="{{current_icon}}"><br /><br />
+Temperature: {{ current_cond.temp }} &deg;F<br />
+Windspeed: {{ current_cond.precip }} mph<br />
+<strong>Forecast</strong>
+<br />
+{% for item in forecast %}
+  <b>{{ item.FCTTIME.hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%
+  <br />
+{% endfor %}
+<small>{{ timestamp }}</small>
+<br /><br />
+</div>
+<p><strong>MySQL</strong></p>
+<div>
 {% for item in database_test %}
   <p>{{ item }}</p>
 {% endfor %}
 </div>
+<br />
+<br />
+<br />
+<small>Debug:</small><br />
+{% for line in debug_info %}
+  <small>{{ line }}</small><br />
+{% endfor %}
