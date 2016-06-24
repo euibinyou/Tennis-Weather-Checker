@@ -15,13 +15,13 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $tags = array("for" => 25);
+        $tags = array("for" => 25, "if" => 27, "set" => 28);
         $filters = array();
         $functions = array();
 
         try {
             $this->env->getExtension('sandbox')->checkSecurity(
-                array('for'),
+                array('for', 'if', 'set'),
                 array(),
                 array()
             );
@@ -52,12 +52,12 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 <div>
 <strong>Current conditions</strong>
 <br />
-";
+<img src=\"";
         // line 20
-        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute((isset($context["current_cond"]) ? $context["current_cond"] : null), "text", array()), "html", null, true));
-        echo "&emsp;<img src=\"";
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["current_icon"]) ? $context["current_icon"] : null), "html", null, true));
-        echo "\"><br /><br />
+        echo "\">&ensp;";
+        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute((isset($context["current_cond"]) ? $context["current_cond"] : null), "text", array()), "html", null, true));
+        echo "<br />
 Temperature: ";
         // line 21
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute((isset($context["current_cond"]) ? $context["current_cond"] : null), "temp", array()), "html", null, true));
@@ -74,8 +74,37 @@ Windspeed: ";
         $context['_seq'] = twig_ensure_traversable((isset($context["forecast"]) ? $context["forecast"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
             // line 26
+            echo "  ";
+            // line 27
+            echo "  ";
+            if (($this->getAttribute($this->getAttribute($context["item"], "FCTTIME", array()), "hour", array()) == 0)) {
+                // line 28
+                echo "    ";
+                $context["converted_hour"] = "12 AM";
+                // line 29
+                echo "  ";
+            } elseif (($this->getAttribute($this->getAttribute($context["item"], "FCTTIME", array()), "hour", array()) == 12)) {
+                // line 30
+                echo "    ";
+                $context["converted_hour"] = "12 PM";
+                // line 31
+                echo "  ";
+            } elseif (($this->getAttribute($this->getAttribute($context["item"], "FCTTIME", array()), "hour", array()) < 12)) {
+                // line 32
+                echo "    ";
+                $context["converted_hour"] = ($this->getAttribute($this->getAttribute($context["item"], "FCTTIME", array()), "hour", array()) . " AM");
+                // line 33
+                echo "  ";
+            } else {
+                // line 34
+                echo "    ";
+                $context["converted_hour"] = (($this->getAttribute($this->getAttribute($context["item"], "FCTTIME", array()), "hour", array()) - 12) . " PM");
+                // line 35
+                echo "  ";
+            }
+            // line 36
             echo "  <b>";
-            echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute($this->getAttribute($context["item"], "FCTTIME", array()), "hour", array()), "html", null, true));
+            echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["converted_hour"]) ? $context["converted_hour"] : null), "html", null, true));
             echo "</b>&emsp;";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute($this->getAttribute($context["item"], "temp", array()), "english", array()), "html", null, true));
             echo " &deg;F&emsp;Wind: ";
@@ -89,7 +118,7 @@ Windspeed: ";
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 29
+        // line 39
         echo "<small>";
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["timestamp"]) ? $context["timestamp"] : null), "html", null, true));
         echo "</small>
@@ -98,11 +127,11 @@ Windspeed: ";
 <p><strong>MySQL</strong></p>
 <div>
 ";
-        // line 34
+        // line 44
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["database_test"]) ? $context["database_test"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
-            // line 35
+            // line 45
             echo "  <p>";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["item"], "html", null, true));
             echo "</p>
@@ -111,18 +140,18 @@ Windspeed: ";
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 37
+        // line 47
         echo "</div>
 <br />
 <br />
 <br />
 <small>Debug:</small><br />
 ";
-        // line 42
+        // line 52
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["debug_info"]) ? $context["debug_info"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["line"]) {
-            // line 43
+            // line 53
             echo "  <small>";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["line"], "html", null, true));
             echo "</small><br />
@@ -145,7 +174,7 @@ Windspeed: ";
 
     public function getDebugInfo()
     {
-        return array (  126 => 43,  122 => 42,  115 => 37,  106 => 35,  102 => 34,  93 => 29,  77 => 26,  73 => 25,  67 => 22,  63 => 21,  57 => 20,  49 => 15,  43 => 13,);
+        return array (  155 => 53,  151 => 52,  144 => 47,  135 => 45,  131 => 44,  122 => 39,  106 => 36,  103 => 35,  100 => 34,  97 => 33,  94 => 32,  91 => 31,  88 => 30,  85 => 29,  82 => 28,  79 => 27,  77 => 26,  73 => 25,  67 => 22,  63 => 21,  57 => 20,  49 => 15,  43 => 13,);
     }
 }
 /* {#*/
@@ -167,13 +196,23 @@ Windspeed: ";
 /* <div>*/
 /* <strong>Current conditions</strong>*/
 /* <br />*/
-/* {{ current_cond.text }}&emsp;<img src="{{current_icon}}"><br /><br />*/
+/* <img src="{{current_icon}}">&ensp;{{ current_cond.text }}<br />*/
 /* Temperature: {{ current_cond.temp }} &deg;F<br />*/
 /* Windspeed: {{ current_cond.precip }} mph<br />*/
 /* <strong>Forecast</strong>*/
 /* <br />*/
 /* {% for item in forecast %}*/
-/*   <b>{{ item.FCTTIME.hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%*/
+/*   {# Convert hours from 24 hr format to 12 hr AM/PM format #}*/
+/*   {% if item.FCTTIME.hour == 0 %}*/
+/*     {% set converted_hour = '12 AM' %}*/
+/*   {% elseif item.FCTTIME.hour == 12 %}*/
+/*     {% set converted_hour = '12 PM' %}*/
+/*   {% elseif item.FCTTIME.hour < 12 %}*/
+/*     {% set converted_hour = item.FCTTIME.hour ~ ' AM' %}*/
+/*   {% else %}*/
+/*     {% set converted_hour = (item.FCTTIME.hour - 12) ~ ' PM' %}*/
+/*   {% endif %}*/
+/*   <b>{{ converted_hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%*/
 /*   <br />*/
 /* {% endfor %}*/
 /* <small>{{ timestamp }}</small>*/
