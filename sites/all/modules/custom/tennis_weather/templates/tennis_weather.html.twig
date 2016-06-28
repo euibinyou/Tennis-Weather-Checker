@@ -20,6 +20,7 @@
 <img src="{{current_icon}}">&ensp;{{ current_cond.text }}<br />
 Temperature: {{ current_cond.temp }} &deg;F<br />
 Windspeed: {{ current_cond.precip }} mph<br />
+<br />
 <strong>Forecast</strong>
 <br />
 {% for item in forecast %}
@@ -39,12 +40,10 @@ Windspeed: {{ current_cond.precip }} mph<br />
 <small>{{ timestamp }}</small>
 <br /><br />
 </div>
-<p><strong>MySQL</strong></p>
-<div>
+<strong>MySQL</strong><br />
 {% for item in database_test %}
-  <p>{{ item }}</p>
+  {{ item }}<br />
 {% endfor %}
-</div>
 <br />
 <br />
 <br />
