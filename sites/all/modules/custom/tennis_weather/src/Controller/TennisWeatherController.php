@@ -3,7 +3,9 @@
 namespace Drupal\tennis_weather\Controller;
 
 use Drupal\Core\Url;
+use Drupal\Core\Database\Database;
 use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Core\Database\Driver\mysql;
 
 /**
  * Controller routines for tennis_weather pages.
@@ -44,33 +46,31 @@ class TennisWeatherController {
       $element['#debug_info'][] = "TEST";
       $element['#debug_info'][] = count($element['#forecast']);
 
-      // Connect to database
-      $mysqli = new \mysqli("localhost", "root", "d8-testing", "weather");
-      $dbInfo = "";
-      if ($mysqli->connect_errno) {
-        $dbInfo = "Failed to connect to MySQL: ("
-                        . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+      /*try {
+
+      } catch (Exception $e) {
+
+      }*/
+
+      // connect to weather database (MySQL)
+      $connection = Database::getConnection('default', 'weather');
+
+      $connectionOptions = $connection->getConnectionOptions();
+      $element['#database_test'][] = SafeMarkup::checkPlain('Database: ' . $connectionOptions['database']);
+      $element['#database_test'][] = SafeMarkup::checkPlain('Key: ' . $connection->getKey());
+      $element['#database_test'][] = SafeMarkup::checkPlain('Target: ' . $connection->getTarget());
+
+      $result = $connection->query("SELECT * FROM test");
+      if (!$result) {
+        $element['#database_test'][] = SafeMarkup::checkPlain('query didn\'t reaturn anything!');
       }
-      $dbInfo = $mysqli->host_info;
-      $element['#database_test'][] = SafeMarkup::checkPlain($dbInfo);
-
-      $result = $mysqli->query("SELECT * FROM test");
-
-      if ($result){
-        $element['#database_test'][] = SafeMarkup::checkPlain('$result->num_rows: ' . $result->num_rows);
-        while ($row = $result->fetch_assoc()) {
-          $element['#database_test'][] = SafeMarkup::checkPlain("");
-          $element['#database_test'][] = SafeMarkup::checkPlain('ZIP: ' . $row['zip']);
-          $element['#database_test'][] = SafeMarkup::checkPlain('DATETIME: ' . $row['time']);
-          $element['#database_test'][] = SafeMarkup::checkPlain('precipitation: ' . $row['precip'] . '%');
-          $element['#database_test'][] = SafeMarkup::checkPlain('wind speed: ' . $row['wind'] . ' mph');
-          $element['#database_test'][] = SafeMarkup::checkPlain('temperature: ' . $row['temp'] . ' (F)');
+      while ($row = $result->fetchAssoc()) {
+        $rowString = 'row: ';
+        foreach ($row as $key => $val) {
+          $rowString .= $key . '=' . $val . ' | ';
         }
-      }
-      else {
-        // TODO: error handling
-        $value = $result ? '?':'query returned $tempResult: FALSE';
-        $element['#database_test'][] = SafeMarkup::checkPlain($value);
+        $rowString = chop($rowString, ' | ');
+        $element['#database_test'][] = SafeMarkup::checkPlain($rowString);
       }
 
       return $element;
@@ -141,5 +141,12 @@ class TennisWeatherController {
     return array($future_count, $offset);
 
     // TODO: check if weekend, return ($future_count, $offset) accordingly
+  }
+
+  // source: http://tumbledesign.com/how-to-put-php-var_dump-in-a-variable/
+  public static function grab_dump($var) {
+    ob_start();
+    var_dump($var);
+    return ob_get_clean();
   }
 }
