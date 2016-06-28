@@ -104,7 +104,30 @@ Windspeed: ";
                 echo "  ";
             }
             // line 37
-            echo "  <b>";
+            echo "  ";
+            if (((($this->getAttribute($this->getAttribute($context["item"], "temp", array()), "english", array()) >= 94) || ($this->getAttribute($this->getAttribute($context["item"], "wspd", array()), "english", array()) >= 18)) || ($this->getAttribute($context["item"], "pop", array()) >= 40))) {
+                // line 38
+                echo "    ";
+                $context["font_clr"] = "red";
+                // line 39
+                echo "  ";
+            } elseif (((($this->getAttribute($this->getAttribute($context["item"], "temp", array()), "english", array()) >= 90) || ($this->getAttribute($this->getAttribute($context["item"], "wspd", array()), "english", array()) >= 12)) || ($this->getAttribute($context["item"], "pop", array()) >= 30))) {
+                // line 40
+                echo "    ";
+                $context["font_clr"] = "orange";
+                // line 41
+                echo "  ";
+            } else {
+                // line 42
+                echo "    ";
+                $context["font_clr"] = "green";
+                // line 43
+                echo "  ";
+            }
+            // line 44
+            echo "  <font color=";
+            echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["font_clr"]) ? $context["font_clr"] : null), "html", null, true));
+            echo "><b>";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["converted_hour"]) ? $context["converted_hour"] : null), "html", null, true));
             echo "</b>&emsp;";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute($this->getAttribute($context["item"], "temp", array()), "english", array()), "html", null, true));
@@ -112,14 +135,14 @@ Windspeed: ";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute($this->getAttribute($context["item"], "wspd", array()), "english", array()), "html", null, true));
             echo " mph&emsp;Chance of precipitation: ";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute($context["item"], "pop", array()), "html", null, true));
-            echo "%
+            echo "%</font>
   <br />
 ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 40
+        // line 47
         echo "<small>";
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["timestamp"]) ? $context["timestamp"] : null), "html", null, true));
         echo "</small>
@@ -127,11 +150,11 @@ Windspeed: ";
 </div>
 <strong>MySQL</strong><br />
 ";
-        // line 44
+        // line 51
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["database_test"]) ? $context["database_test"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
-            // line 45
+            // line 52
             echo "  ";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["item"], "html", null, true));
             echo "<br />
@@ -140,17 +163,17 @@ Windspeed: ";
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 47
+        // line 54
         echo "<br />
 <br />
 <br />
 <small>Debug:</small><br />
 ";
-        // line 51
+        // line 58
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["debug_info"]) ? $context["debug_info"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["line"]) {
-            // line 52
+            // line 59
             echo "  <small>";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["line"], "html", null, true));
             echo "</small><br />
@@ -173,7 +196,7 @@ Windspeed: ";
 
     public function getDebugInfo()
     {
-        return array (  154 => 52,  150 => 51,  144 => 47,  135 => 45,  131 => 44,  123 => 40,  107 => 37,  104 => 36,  101 => 35,  98 => 34,  95 => 33,  92 => 32,  89 => 31,  86 => 30,  83 => 29,  80 => 28,  78 => 27,  74 => 26,  67 => 22,  63 => 21,  57 => 20,  49 => 15,  43 => 13,);
+        return array (  177 => 59,  173 => 58,  167 => 54,  158 => 52,  154 => 51,  146 => 47,  128 => 44,  125 => 43,  122 => 42,  119 => 41,  116 => 40,  113 => 39,  110 => 38,  107 => 37,  104 => 36,  101 => 35,  98 => 34,  95 => 33,  92 => 32,  89 => 31,  86 => 30,  83 => 29,  80 => 28,  78 => 27,  74 => 26,  67 => 22,  63 => 21,  57 => 20,  49 => 15,  43 => 13,);
     }
 }
 /* {#*/
@@ -212,7 +235,14 @@ Windspeed: ";
 /*   {% else %}*/
 /*     {% set converted_hour = (item.FCTTIME.hour - 12) ~ ' PM' %}*/
 /*   {% endif %}*/
-/*   <b>{{ converted_hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%*/
+/*   {% if item.temp.english >= 94 or item.wspd.english >= 18 or item.pop >= 40 %}*/
+/*     {% set font_clr = "red" %}*/
+/*   {% elseif item.temp.english >= 90 or item.wspd.english >= 12 or item.pop >= 30 %}*/
+/*     {% set font_clr = "orange" %}*/
+/*   {% else %}*/
+/*     {% set font_clr = "green" %}*/
+/*   {% endif %}*/
+/*   <font color={{ font_clr }}><b>{{ converted_hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%</font>*/
 /*   <br />*/
 /* {% endfor %}*/
 /* <small>{{ timestamp }}</small>*/

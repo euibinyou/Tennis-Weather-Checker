@@ -34,7 +34,14 @@ Windspeed: {{ current_cond.precip }} mph<br />
   {% else %}
     {% set converted_hour = (item.FCTTIME.hour - 12) ~ ' PM' %}
   {% endif %}
-  <b>{{ converted_hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%
+  {% if item.temp.english >= 94 or item.wspd.english >= 18 or item.pop >= 40 %}
+    {% set font_clr = "red" %}
+  {% elseif item.temp.english >= 90 or item.wspd.english >= 12 or item.pop >= 30 %}
+    {% set font_clr = "orange" %}
+  {% else %}
+    {% set font_clr = "green" %}
+  {% endif %}
+  <font color={{ font_clr }}><b>{{ converted_hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%</font>
   <br />
 {% endfor %}
 <small>{{ timestamp }}</small>
