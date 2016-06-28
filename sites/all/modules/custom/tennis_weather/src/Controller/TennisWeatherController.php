@@ -25,9 +25,15 @@ class TennisWeatherController {
       $page_title = 'Tennis Weather Checker';
       $element['#title'] = SafeMarkup::checkPlain($page_title);
 
-      // Weather Underground API
-      $json_string = file_get_contents('http://api.wunderground.com/api/bb27100d1b9656be/geolookup/conditions/hourly/q/' . $zip . '.json');
-      $parsed_json = json_decode($json_string);
+      // Use Weather Underground API to get current condition and forecast
+      $apiURL = 'http://api.wunderground.com/api/bb27100d1b9656be/geolookup/conditions/hourly/q/' .  $zip . '.json';
+
+      $client = \Drupal::httpClient();
+      // TODO: error handling
+      $request = $client->get($apiURL);
+      $parsed_json = json_decode($request->getBody());
+
+      // City, ST (ZIP)
       $element['#subheading'] = SafeMarkup::checkPlain($parsed_json->{'location'}->{'city'}
                                                         . ', ' . $parsed_json->{'location'}->{'state'}
                                                         . ' (' . $parsed_json->{'location'}->{'zip'} . ')');
@@ -146,5 +152,9 @@ class TennisWeatherController {
     ob_start();
     var_dump($var);
     return ob_get_clean();
+  }
+
+  public function generateSummary() {
+    
   }
 }
