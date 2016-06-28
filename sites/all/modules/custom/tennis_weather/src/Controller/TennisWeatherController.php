@@ -5,7 +5,6 @@ namespace Drupal\tennis_weather\Controller;
 use Drupal\Core\Url;
 use Drupal\Core\Database\Database;
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Core\Database\Driver\mysql;
 
 /**
  * Controller routines for tennis_weather pages.
@@ -43,8 +42,7 @@ class TennisWeatherController {
       $current_time = $parsed_json->{'hourly_forecast'}[0]->{'FCTTIME'}->{'hour'};
       $element['#forecast'] = $this->getForecast($parsed_json, $current_time);
 
-      $element['#debug_info'][] = "TEST";
-      $element['#debug_info'][] = count($element['#forecast']);
+      $element['#debug_info'][] = "test";
 
       /*try {
 
