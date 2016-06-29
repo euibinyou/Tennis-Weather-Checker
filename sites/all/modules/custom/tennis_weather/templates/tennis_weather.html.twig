@@ -19,30 +19,12 @@
 <br />
 <img src="{{current_icon}}">&ensp;{{ current_cond.text }}<br />
 Temperature: {{ current_cond.temp }} &deg;F<br />
-Windspeed: {{ current_cond.precip }} mph<br />
+Wind: {{ current_cond.precip }} mph<br />
 <br />
 <strong>Forecast</strong>
 <br />
 {% for item in forecast %}
-  {# Convert hours from 24 hr format to 12 hr AM/PM format #}
-  {% if item.FCTTIME.hour == 0 %}
-    {% set converted_hour = '12 AM' %}
-  {% elseif item.FCTTIME.hour == 12 %}
-    {% set converted_hour = '12 PM' %}
-  {% elseif item.FCTTIME.hour < 12 %}
-    {% set converted_hour = item.FCTTIME.hour ~ ' AM' %}
-  {% else %}
-    {% set converted_hour = (item.FCTTIME.hour - 12) ~ ' PM' %}
-  {% endif %}
-  {% if item.temp.english >= 94 or item.wspd.english >= 18 or item.pop >= 40 %}
-    {% set font_clr = "red" %}
-  {% elseif item.temp.english >= 90 or item.wspd.english >= 12 or item.pop >= 30 %}
-    {% set font_clr = "orange" %}
-  {% else %}
-    {% set font_clr = "green" %}
-  {% endif %}
-  <font color={{ font_clr }}><b>{{ converted_hour }}</b>&emsp;{{item.temp.english}} &deg;F&emsp;Wind: {{ item.wspd.english }} mph&emsp;Chance of precipitation: {{ item.pop }}%</font>
-  <br />
+  <font color={{ item.color }}>{{ item.string|raw }}</font><br />
 {% endfor %}
 <small>{{ timestamp }}</small>
 <br /><br />

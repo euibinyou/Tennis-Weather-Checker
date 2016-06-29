@@ -20,6 +20,7 @@ class TennisWeatherController {
    *   ZIP code of the area to check weather
    */
   public function content($zip) {
+      // Theme function
       $element['#theme'] = 'tennis_weather';
 
       $page_title = 'Tennis Weather Checker';
@@ -29,9 +30,15 @@ class TennisWeatherController {
       $apiURL = 'http://api.wunderground.com/api/bb27100d1b9656be/geolookup/conditions/hourly/q/' .  $zip . '.json';
 
       $client = \Drupal::httpClient();
-      // TODO: error handling
-      $request = $client->get($apiURL);
-      $parsed_json = json_decode($request->getBody());
+      try {
+        $request = $client->get($apiURL);
+        $response = $request->getBody();
+      }
+      catch (RequestException $e) {
+        // TODO: better error handling?
+        watchdog_exception('weather API', $e->getMessage());
+      }
+      $parsed_json = json_decode($response);
 
       // City, ST (ZIP)
       $element['#subheading'] = SafeMarkup::checkPlain($parsed_json->{'location'}->{'city'}
@@ -39,22 +46,18 @@ class TennisWeatherController {
                                                         . ' (' . $parsed_json->{'location'}->{'zip'} . ')');
 
       $element['#summary'] = SafeMarkup::checkPlain('[WEATHER SUMMARY]');
+
       $element['#current_icon'] = SafeMarkup::checkPlain('http://icons.wxug.com/i/c/j/' . $parsed_json->{'current_observation'}->{'icon'} . '.gif');
       $element['#current_cond']['text'] = SafeMarkup::checkPlain($parsed_json->{'current_observation'}->{'weather'});
       $element['#current_cond']['temp'] = SafeMarkup::checkPlain($parsed_json->{'current_observation'}->{'temp_f'});
       $element['#current_cond']['precip'] = SafeMarkup::checkPlain($parsed_json->{'current_observation'}->{'wind_mph'});
-      $element['#timestamp'] = SafeMarkup::checkPlain('Updated: ' . $parsed_json->{'current_observation'}->{'local_time_rfc822'});
 
       $current_time = $parsed_json->{'hourly_forecast'}[0]->{'FCTTIME'}->{'hour'};
       $element['#forecast'] = $this->getForecast($parsed_json, $current_time);
 
+      $element['#timestamp'] = SafeMarkup::checkPlain('Updated: ' . $parsed_json->{'current_observation'}->{'local_time_rfc822'});
+
       $element['#debug_info'][] = "test";
-
-      /*try {
-
-      } catch (Exception $e) {
-
-      }*/
 
       // connect to weather database (MySQL)
       $connection = Database::getConnection('default', 'weather');
@@ -154,7 +157,14 @@ class TennisWeatherController {
     return ob_get_clean();
   }
 
+  /**
+   * Generate concise text summary  .
+   * @param
+   *
+   * @return string $summary
+   *
+   */
   public function generateSummary() {
-    
+
   }
 }

@@ -33,3 +33,46 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
   );
   return $variables;
 }
+
+
+/**
+ * Template preprocess function for Tennis Weather Checker.
+ * Dynamically change formatting (color, emphasis, etc.) of forecast info.
+ * @param variables
+ *   An associative array containing:
+ *   - forecast
+ */
+function template_preprocess_tennis_weather(&$variables) {
+  foreach ($variables['forecast'] as &$forecast) {
+    // TODO: use SafeMarkup?
+
+    // Convert 24 hour to 12 hour AM/PM
+    if ($forecast->FCTTIME->hour == 0 || $forecast->FCTTIME->hour == 12) {
+      $forecast->FCTTIME->hour = 12;
+    }
+    else if ($forecast->FCTTIME->hour > 12) {
+      $forecast->FCTTIME->hour = $forecast->FCTTIME->hour - 12;
+    }
+
+    $rowString = sprintf("%-5s Temperature: %-3s Wind: %-3s mph Chance of precipitation: %-3s",
+                        $forecast->FCTTIME->hour . ' ' . $forecast->FCTTIME->ampm,
+                        $forecast->temp->english . ' &deg;F',
+                        $forecast->wspd->english, $forecast->pop . '%');
+
+    // Change color of row depending on weather conditions
+    // TODO: make these conditions configurable
+    $clr = 'black';
+    if ($forecast->temp->english >= 94 || $forecast->wspd->english >= 18 || $forecast->pop >= 40) {
+      $clr = 'red';
+    }
+    else if ($forecast->temp->english >= 90 || $forecast->wspd->english >= 12 || $forecast->pop >= 30) {
+      $clr = 'orange';
+    }
+    else {
+      $clr = 'green';
+    }
+
+    $forecast = array('string' => $rowString,
+                      'color' => $clr);
+  }
+}
