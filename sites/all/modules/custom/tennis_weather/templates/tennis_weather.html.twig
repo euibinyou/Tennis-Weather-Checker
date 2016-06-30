@@ -10,24 +10,47 @@
  * @ingroup themeable
  */
 #}
+<style>
+#img_div {
+  position: relative;
+  display: inline;
+}
+#img_base {
+  position: absolute;
+  bottom: -10;
+  right: -10;
+}
+</style>
 <h1><strong>{{ subheading }}</strong><h1>
 <div>
-<p>{{ summary }}</p>
+  <p>
+    {{ summary.today|raw }}<br />
+    {{ summary.hr|raw }}<br />
+  </p>
 </div>
 <div>
-<strong>Current conditions</strong>
-<br />
-<img src="{{current_icon}}">&ensp;{{ current_cond.text }}<br />
-Temperature: {{ current_cond.temp }} &deg;F<br />
-Wind: {{ current_cond.precip }} mph<br />
-<br />
-<strong>Forecast</strong>
-<br />
-{% for item in forecast %}
-  <font color={{ item.color }}>{{ item.string|raw }}</font><br />
-{% endfor %}
-<small>{{ timestamp }}</small>
-<br /><br />
+  <strong>Current conditions</strong>
+  <br />
+  <img src="{{current_icon}}">&ensp;{{ current_cond.text }}<br />
+  Temperature: {{ current_cond.temp }} &deg;F<br />
+  Wind: {{ current_cond.precip }} mph<br />
+  <br />
+  <strong>Forecast</strong>
+  <br />
+  {% for hour in forecast %}
+    {{ hour|raw }}<br />
+  {% endfor %}
+  <small>{{ timestamp }}</small>
+  <br /><br />
+</div>
+<div>
+  <strong>Radar</strong>
+  <br />
+  <div id="img_div">
+    <img id="img_base" src="{{ radar_gif }}" />
+    <img id="img_sat" src="{{ map_img }}" />
+  </div>
+  <br /><br />
 </div>
 <strong>MySQL</strong><br />
 {% for item in database_test %}
