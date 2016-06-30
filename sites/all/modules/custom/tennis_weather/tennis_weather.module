@@ -27,7 +27,9 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
                             'timestamp' => NULL,
                             'forecast' => NULL,
                             'current_icon' => NULL,
-                            'debug_info' => NULL, ),
+                            'debug_info' => NULL,
+                            'radar_gif' => NULL,
+                            'map_img' => NULL),
       'template' => 'tennis_weather',
     ),
   );
@@ -43,36 +45,72 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
  *   - forecast
  */
 function template_preprocess_tennis_weather(&$variables) {
-  foreach ($variables['forecast'] as &$forecast) {
+  foreach ($variables['forecast'] as &$hourForecast) {
     // TODO: use SafeMarkup?
 
     // Convert 24 hour to 12 hour AM/PM
-    if ($forecast->FCTTIME->hour == 0 || $forecast->FCTTIME->hour == 12) {
-      $forecast->FCTTIME->hour = 12;
+    if ($hourForecast->FCTTIME->hour == 0 || $hourForecast->FCTTIME->hour == 12) {
+      $hourForecast->FCTTIME->hour = 12;
     }
-    else if ($forecast->FCTTIME->hour > 12) {
-      $forecast->FCTTIME->hour = $forecast->FCTTIME->hour - 12;
+    else if ($hourForecast->FCTTIME->hour > 12) {
+      $hourForecast->FCTTIME->hour = $hourForecast->FCTTIME->hour - 12;
     }
 
-    $rowString = sprintf("%-5s Temperature: %-3s Wind: %-3s mph Chance of precipitation: %-3s",
-                        $forecast->FCTTIME->hour . ' ' . $forecast->FCTTIME->ampm,
-                        $forecast->temp->english . ' &deg;F',
-                        $forecast->wspd->english, $forecast->pop . '%');
+    $time = $hourForecast->FCTTIME->hour . ' ' . $hourForecast->FCTTIME->ampm;
+    $temp = $hourForecast->temp->english . ' &deg;F';
+    $wind = $hourForecast->wspd->english . ' mph';
+    $precip = $hourForecast->pop . '%';
 
-    // Change color of row depending on weather conditions
+    // Change color of time text depending on weather conditions
     // TODO: make these conditions configurable
-    $clr = 'black';
-    if ($forecast->temp->english >= 94 || $forecast->wspd->english >= 18 || $forecast->pop >= 40) {
-      $clr = 'red';
+    if ($hourForecast->temp->english >= 94 || $hourForecast->wspd->english >= 18 || $hourForecast->pop >= 40) {
+      $time = "<font color=red>" . $time . "</font>";
     }
-    else if ($forecast->temp->english >= 90 || $forecast->wspd->english >= 12 || $forecast->pop >= 30) {
-      $clr = 'orange';
+    else if ($hourForecast->temp->english >= 90 || $hourForecast->wspd->english >= 12 || $hourForecast->pop >= 30) {
+      $time = "<font color=orange>" . $time . "</font>";
     }
     else {
-      $clr = 'green';
+      $time = "<font color=green>" . $time . "</font>";
     }
 
-    $forecast = array('string' => $rowString,
-                      'color' => $clr);
+    /**
+    * Bold problematic part(s) of forecast
+    **/
+    // Check temperature
+    if ($hourForecast->temp->english >= 90) {
+      $temp = "<b>". $temp ."</b>";
+    }
+    // Check windspeed
+    if ($hourForecast->wspd->english >= 12) {
+      $wind = "<b>". $wind ."</b>";
+    }
+    // Check precipitation probability
+    if ($hourForecast->pop >= 30) {
+      $precip = "<b>". $precip ."</b>";
+    }
+
+    $rowString = sprintf("%s Temperature: %s Wind: %s Chance of precipitation: %s",
+                        $time, $temp, $wind, $precip);
+
+    $hourForecast = $rowString;
+  }
+
+  // Conditional formatting of forecast summary text
+  // TODO: make these criteria configurable
+  if ($variables['summary']['today']['value'] > 1){
+    $variables['summary']['today'] = '<font color=orange>'. sprintf($variables['summary']['today']['string'], $variables['summary']['today']['value']) . '</font>';
+  }
+  else {
+    $variables['summary']['today'] = sprintf($variables['summary']['today']['string'], $variables['summary']['today']['value']);
+  }
+
+  if ($variables['summary']['hr']['value'] > 1){
+    $variables['summary']['hr'] = '<font color=red>'. sprintf($variables['summary']['hr']['string'], $variables['summary']['hr']['value']) . '</font>';
+  }
+  else if ($variables['summary']['hr']['value'] > .1) {
+    $variables['summary']['hr'] = '<font color=orange>'. sprintf($variables['summary']['hr']['string'], $variables['summary']['hr']['value']) . '</font>';
+  }
+  else {
+    $variables['summary']['hr'] = sprintf($variables['summary']['hr']['string'], $variables['summary']['hr']['value']);
   }
 }
