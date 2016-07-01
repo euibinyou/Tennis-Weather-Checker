@@ -24,8 +24,6 @@ class TennisWeatherController {
 
     // Theme function
     $element['#theme'] = 'tennis_weather';
-    //$element['#type'] = 'page';
-    $element['#markup'] = TRUE;
 
     $element['#title'] = SafeMarkup::checkPlain($page_title);
 
@@ -34,14 +32,8 @@ class TennisWeatherController {
     $mapsAPIkey =  'AIzaSyDha2hYwC74_fsOQIWWEZ0Qzd8UAmJtHlA';
     // Weather Underground API (current condition and forecast)
     $weatherAPIurl = 'http://api.wunderground.com/api/' . $weatherAPIkey . '/geolookup/conditions/hourly/q/' .  $zip . '.json';
-    // Weather Underground API (radar - satellite)
-    $radarURL = "http://api.wunderground.com/api/$weatherAPIkey/animatedsatellite/q/$zip.gif?width=640&height=480&key=sat_ir4_bottom&timelabel=1&timelabel.x=470&timelabel.y=20&proj=me&num=8&delay=50&tzname=America/New_York&basemap=0&radius=260&radunits=km&borders=0";
-    // Google Static Maps API (base layer / map for radar)
-    $mapURL = "https://maps.googleapis.com/maps/api/staticmap?center=$zip&zoom=7&size=640x480&maptype=roadmap&key=$mapsAPIkey";
 
-    $element['#radar_gif'] = $radarURL;
-    $element['#map_img'] = $mapURL;
-
+    // get weather data JSON from Weather Underground
     $client = \Drupal::httpClient();
     try {
       $request = $client->get($weatherAPIurl);
@@ -52,6 +44,16 @@ class TennisWeatherController {
       watchdog_exception('weather API', $e->getMessage());
     }
     $parsed_json = json_decode($response);
+
+    $timezone = $parsed_json->{'current_observation'}->{'local_tz_long'};
+    // Weather Underground API (radar - satellite)
+    $radarURL = "http://api.wunderground.com/api/$weatherAPIkey/animatedsatellite/q/$zip.gif?width=640&height=480&key=sat_ir4_bottom&timelabel=1&timelabel.x=470&timelabel.y=20&proj=me&num=8&delay=50&tzname=$timezone&basemap=0&radius=260&radunits=km&borders=0";
+    // Google Static Maps API (base layer / map for radar)
+    $mapURL = "https://maps.googleapis.com/maps/api/staticmap?center=$zip&zoom=7&size=640x480&maptype=roadmap&key=$mapsAPIkey";
+
+    $element['#radar_gif'] = $radarURL;
+    $element['#map_img'] = $mapURL;
+
 
     // City, ST (ZIP)
     $element['#subheading'] = SafeMarkup::checkPlain($parsed_json->{'location'}->{'city'}
@@ -68,7 +70,10 @@ class TennisWeatherController {
     $current_time = $parsed_json->{'hourly_forecast'}[0]->{'FCTTIME'}->{'hour'};
     $element['#forecast'] = $this->getForecast($parsed_json, $current_time);
 
-    $element['#timestamp'] = SafeMarkup::checkPlain('Updated: ' . $parsed_json->{'current_observation'}->{'local_time_rfc822'});
+    date_default_timezone_set($parsed_json->{'current_observation'}->{'local_tz_long'});
+    $element['#timestamp'] = 'Updated: ' . date('l, H:i A', $parsed_json->{'current_observation'}->{'local_epoch'});
+    //$element['#timestamp'] = SafeMarkup::checkPlain('Updated: ' . $parsed_json->{'current_observation'}->{'local_time_rfc822'});
+    //$element['#timestamp'] = $parsed_json->{'current_observation'}->{'local_epoch'};
 
     $element['#debug_info'][] = "test";
 
