@@ -20,31 +20,47 @@
   bottom: -10;
   right: -10;
 }
+.body_text {
+  font-family: Consolas, Monaco, 'Lucida Sans Typewriter', monospace;
+}
+.body_title {
+  font-weight: bold;
+  size: 4;
+}
 </style>
-<h1><strong>{{ subheading }}</strong><h1>
+<font size="5"><b>{{ subheading }}</b></font><br />
+<small>{{ timestamp }}</small><br /><br />
 <div>
   <p>
-    {{ summary.today|raw }}<br />
-    {{ summary.hr|raw }}<br />
+    <font class="body_text">
+      {{ summary.today|raw }}<br />
+      {{ summary.hr|raw }}<br />
+    </font>
   </p>
 </div>
 <div>
-  <strong>Current conditions</strong>
+  <font class="body_title">Current conditions</font><br />
+  <img style="display: block; vertical-align: middle;  margin-right: 8px; float: left;" src="{{ current_icon }}" />
+    <span style="display: block; overflow: auto;">
+      <font class="body_text">
+        {{ current_cond.text }}<br />
+        Temperature: {{ current_cond.temp }} &deg;F<br />
+        Wind: {{ current_cond.precip }} mph<br />
+      </font>
+    </span>
+  </font>
   <br />
-  <img src="{{current_icon}}">&ensp;{{ current_cond.text }}<br />
-  Temperature: {{ current_cond.temp }} &deg;F<br />
-  Wind: {{ current_cond.precip }} mph<br />
+  <font class="body_title">Forecast</font>
   <br />
-  <strong>Forecast</strong>
-  <br />
+  <font class="body_text"><span style="line-height: 22px">
   {% for hour in forecast %}
     {{ hour|raw }}<br />
   {% endfor %}
-  <small>{{ timestamp }}</small>
-  <br /><br />
+  </span></font>
 </div>
+<br />
 <div>
-  <strong>Radar</strong>
+  <font class="body_title">Radar</font>
   <br />
   <div id="img_div">
     <img id="img_base" src="{{ radar_gif }}" />
