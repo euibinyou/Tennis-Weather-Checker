@@ -45,6 +45,19 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
  *   - forecast
  */
 function template_preprocess_tennis_weather(&$variables) {
+  // Load settings
+  $config = \Drupal::config('tennis_weather.settings');
+  $temp_max = $config->get('tennis_weather.temp_max');
+  $temp_warn = $config->get('tennis_weather.temp_warn');
+  $wind_max = $config->get('tennis_weather.wind_max');
+  $wind_warn = $config->get('tennis_weather.wind_warn');
+  $precip_max = $config->get('tennis_weather.precip_max');
+  $precip_warn = $config->get('tennis_weather.precip_warn');
+  $start_hr = $config->get('tennis_weather.start_hr');
+  $start_ampm = $config->get('tennis_weather.start_ampm');
+  $end_hr = $config->get('tennis_weather.end_hr');
+  $end_ampm = $config->get('tennis_weather.end_ampm');
+
   foreach ($variables['forecast'] as &$hourForecast) {
     // TODO: use SafeMarkup?
 
@@ -81,11 +94,10 @@ function template_preprocess_tennis_weather(&$variables) {
     $formattedPrecip = $paddedPrecip;
 
     // Change color of time text depending on weather conditions
-    // TODO: make these conditions configurable
-    if ($hourForecast->temp->english >= 94 || $hourForecast->wspd->english >= 18 || $hourForecast->pop >= 40) {
+    if ($hourForecast->temp->english >= $temp_max || $hourForecast->wspd->english >= $wind_max || $hourForecast->pop >= $precip_max) {
       $formattedTime = "<font color=red><b>" . $paddedTime . "</b></font>";
     }
-    else if ($hourForecast->temp->english >= 90 || $hourForecast->wspd->english >= 12 || $hourForecast->pop >= 30) {
+    else if ($hourForecast->temp->english >= $temp_warn || $hourForecast->wspd->english >= $wind_warn || $hourForecast->pop >= $precip_warn) {
       $formattedTime = "<font color=orange><b>" . $paddedTime . "</b></font>";
     }
     else {
@@ -96,31 +108,31 @@ function template_preprocess_tennis_weather(&$variables) {
     * Bold problematic part(s) of forecast
     **/
     // Check temperature
-    if ($hourForecast->temp->english >= 90) {
+    if ($hourForecast->temp->english >= $temp_warn) {
       $formattedTemp = "<b>". $paddedTemp ."</b>";
     }
     // Check windspeed
-    if ($hourForecast->wspd->english >= 12) {
+    if ($hourForecast->wspd->english >= $wind_warn) {
       $formattedWind = "<b>". $paddedWind ."</b>";
     }
     // Check precipitation probability
-    if ($hourForecast->pop >= 30) {
+    if ($hourForecast->pop >= $precip_warn) {
       $formattedPrecip = "<b>". $paddedPrecip ."</b>";
     }
 
-    $hourForecast = $formattedTime . $formattedTemp . '&emsp;&emsp;&emsp;' . $formattedWind . '&emsp;&emsp;&emsp;' . $formattedPrecip;
+    $hourForecast = $formattedTime . '&emsp;' . $formattedTemp . '&emsp;&emsp;&emsp;' . $formattedWind . '&emsp;&emsp;&emsp;' . $formattedPrecip;
   }
 
   // Conditional formatting of forecast summary text
   // TODO: make these criteria configurable
-  if ($variables['summary']['today']['value'] > 1){
+  if ($variables['summary']['today']['value'] > 1) {
     $variables['summary']['today'] = '<font color=orange><b>'. sprintf($variables['summary']['today']['string'], $variables['summary']['today']['value']) . '</b></font>';
   }
   else {
     $variables['summary']['today'] = sprintf($variables['summary']['today']['string'], $variables['summary']['today']['value']);
   }
 
-  if ($variables['summary']['hr']['value'] > 1){
+  if ($variables['summary']['hr']['value'] > 1) {
     $variables['summary']['hr'] = '<font color=red><b>'. sprintf($variables['summary']['hr']['string'], $variables['summary']['hr']['value']) . '</b></font>';
   }
   else if ($variables['summary']['hr']['value'] > .1) {
@@ -129,4 +141,7 @@ function template_preprocess_tennis_weather(&$variables) {
   else {
     $variables['summary']['hr'] = sprintf($variables['summary']['hr']['string'], $variables['summary']['hr']['value']);
   }
+
+  $variables['debug_info'][] = 'Start: ' . $start_hr . ' ' . $start_ampm;
+  $variables['debug_info'][] = 'End: ' . $end_hr . ' ' . $end_ampm;
 }
