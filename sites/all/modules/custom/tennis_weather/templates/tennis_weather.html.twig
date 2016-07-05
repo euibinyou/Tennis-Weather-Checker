@@ -31,14 +31,6 @@
 <font size="5"><b>{{ subheading }}</b></font><br />
 <small>{{ timestamp }}</small><br /><br />
 <div>
-  <p>
-    <font class="body_text">
-      {{ summary.today|raw }}<br />
-      {{ summary.hr|raw }}<br />
-    </font>
-  </p>
-</div>
-<div>
   <font class="body_title">Current conditions</font><br />
   <img style="display: block; vertical-align: middle;  margin-right: 8px; float: left;" src="{{ current_icon }}" />
     <span style="display: block; overflow: auto;">
@@ -49,15 +41,22 @@
       </font>
     </span>
   </font>
-  <br />
-  <font class="body_title">Forecast</font>
-  <br />
-  <font class="body_text"><span style="line-height: 22px">
-  {% for hour in forecast %}
-    {{ hour|raw }}<br />
-  {% endfor %}
-  </span></font>
 </div>
+<p>
+  <font class="body_text"><br />
+    {{ summary.today|raw }}<br />
+    {{ summary.hr|raw }}<br />
+  </font>
+</p>
+<font class="body_title">Forecast</font>
+<br />
+<font class="body_text">
+  <span style="line-height: 22px">
+    {% for hour in forecast %}
+      {{ hour|raw }}<br />
+    {% endfor %}
+  </span>
+</font>
 <br />
 <div>
   <font class="body_title">Radar</font>
@@ -70,7 +69,7 @@
 </div>
 <strong>MySQL</strong><br />
 {% for item in database_test %}
-  {{ item }}<br />
+    <font class="body_text">{{ item }}</font><br />
 {% endfor %}
 <br />
 <br />

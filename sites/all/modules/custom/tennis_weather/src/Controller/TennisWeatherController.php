@@ -71,11 +71,7 @@ class TennisWeatherController {
     $element['#forecast'] = $this->getForecast($parsed_json, $current_time);
 
     date_default_timezone_set($parsed_json->{'current_observation'}->{'local_tz_long'});
-    $element['#timestamp'] = 'Updated: ' . date('l, H:i A', $parsed_json->{'current_observation'}->{'local_epoch'});
-    //$element['#timestamp'] = SafeMarkup::checkPlain('Updated: ' . $parsed_json->{'current_observation'}->{'local_time_rfc822'});
-    //$element['#timestamp'] = $parsed_json->{'current_observation'}->{'local_epoch'};
-
-    $element['#debug_info'][] = "test";
+    $element['#timestamp'] = 'Updated: ' . date('l, g:i A', $parsed_json->{'current_observation'}->{'local_epoch'});
 
     // connect to weather database (MySQL)
     $connection = Database::getConnection('default', 'weather');
@@ -97,6 +93,8 @@ class TennisWeatherController {
       $rowString = chop($rowString, ' | ');
       $element['#database_test'][] = SafeMarkup::checkPlain($rowString);
     }
+
+    $element['#debug_info'][] = "test";
 
     return $element;
   }
@@ -141,12 +139,22 @@ class TennisWeatherController {
    *   and offset to skip to the beginning of the range of future hours to forecast in Weather Underground API JSON response.
    */
   public function calculateForecastHours($current_time) {
-    // TODO: make $start_time and $end_time configurable in admin settings (remember to validate input)
-    // Tennis-playing hours start at 8 AM and end at 10 PM (default values)
-    $start_time = 8;
-    $end_time = 22;
-    $offset = 0;
+    // Load settings
+    $config = \Drupal::config('tennis_weather.settings');
+    $start_time = $config->get('tennis_weather.start_hr');
+    $start_ampm = $config->get('tennis_weather.start_ampm');
+    $end_time = $config->get('tennis_weather.end_hr');
+    $end_ampm = $config->get('tennis_weather.end_ampm');
 
+    // Convert 12-hr to 24-hr format
+    if ($start_ampm == 'PM') {
+      $start_time += 12;
+    }
+    if ($end_ampm == 'PM')  {
+      $end_time += 12;
+    }
+
+    $offset = 0;
     if ($current_time >= $start_time && $current_time <= $end_time) {
       // If between start and end times, return number of hours to forecast for {current time} to end time (same day).
       $future_count = $end_time - $current_time + 1;
@@ -167,13 +175,6 @@ class TennisWeatherController {
     // TODO: check if weekend, return ($future_count, $offset) accordingly
   }
 
-  // source: http://tumbledesign.com/how-to-put-php-var_dump-in-a-variable/
-  public static function grab_dump($var) {
-    ob_start();
-    var_dump($var);
-    return ob_get_clean();
-  }
-
   /**
    * Generate concise text summary  .
    * @param assoc $json
@@ -190,7 +191,6 @@ class TennisWeatherController {
                      'hr' => ['string' => "precipitation in the last hour: %s in.",
                                     'value' => $precip_1hr]);
 
-    //return var_dump($summary);
     return $summary;
   }
 }

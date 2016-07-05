@@ -1,0 +1,6 @@
+tennis_weather.admin:
+  title: 'Tennis Weather Checker settings'
+  description: 'Change hours, conditions, etc.'
+  parent: system.admin_config_development
+  route_name: tennis_weather.form
+  weight: 100

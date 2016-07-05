@@ -15,8 +15,8 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $tags = array("for" => 56);
-        $filters = array("raw" => 36);
+        $tags = array("for" => 55);
+        $filters = array("raw" => 47);
         $functions = array();
 
         try {
@@ -67,74 +67,73 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["timestamp"]) ? $context["timestamp"] : null), "html", null, true));
         echo "</small><br /><br />
 <div>
-  <p>
-    <font class=\"body_text\">
-      ";
-        // line 36
-        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->renderVar($this->getAttribute((isset($context["summary"]) ? $context["summary"] : null), "today", array())));
-        echo "<br />
-      ";
-        // line 37
-        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->renderVar($this->getAttribute((isset($context["summary"]) ? $context["summary"] : null), "hr", array())));
-        echo "<br />
-    </font>
-  </p>
-</div>
-<div>
   <font class=\"body_title\">Current conditions</font><br />
   <img style=\"display: block; vertical-align: middle;  margin-right: 8px; float: left;\" src=\"";
-        // line 43
+        // line 35
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["current_icon"]) ? $context["current_icon"] : null), "html", null, true));
         echo "\" />
     <span style=\"display: block; overflow: auto;\">
       <font class=\"body_text\">
         ";
-        // line 46
+        // line 38
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute((isset($context["current_cond"]) ? $context["current_cond"] : null), "text", array()), "html", null, true));
         echo "<br />
         Temperature: ";
-        // line 47
+        // line 39
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute((isset($context["current_cond"]) ? $context["current_cond"] : null), "temp", array()), "html", null, true));
         echo " &deg;F<br />
         Wind: ";
-        // line 48
+        // line 40
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $this->getAttribute((isset($context["current_cond"]) ? $context["current_cond"] : null), "precip", array()), "html", null, true));
         echo " mph<br />
       </font>
     </span>
   </font>
-  <br />
-  <font class=\"body_title\">Forecast</font>
-  <br />
-  <font class=\"body_text\"><span style=\"line-height: 22px\">
-  ";
-        // line 56
+</div>
+<p>
+  <font class=\"body_text\"><br />
+    ";
+        // line 47
+        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->renderVar($this->getAttribute((isset($context["summary"]) ? $context["summary"] : null), "today", array())));
+        echo "<br />
+    ";
+        // line 48
+        echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->renderVar($this->getAttribute((isset($context["summary"]) ? $context["summary"] : null), "hr", array())));
+        echo "<br />
+  </font>
+</p>
+<font class=\"body_title\">Forecast</font>
+<br />
+<font class=\"body_text\">
+  <span style=\"line-height: 22px\">
+    ";
+        // line 55
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["forecast"]) ? $context["forecast"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["hour"]) {
-            // line 57
-            echo "    ";
+            // line 56
+            echo "      ";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->renderVar($context["hour"]));
             echo "<br />
-  ";
+    ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['hour'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 59
-        echo "  </span></font>
-</div>
+        // line 58
+        echo "  </span>
+</font>
 <br />
 <div>
   <font class=\"body_title\">Radar</font>
   <br />
   <div id=\"img_div\">
     <img id=\"img_base\" src=\"";
-        // line 66
+        // line 65
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["radar_gif"]) ? $context["radar_gif"] : null), "html", null, true));
         echo "\" />
     <img id=\"img_sat\" src=\"";
-        // line 67
+        // line 66
         echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, (isset($context["map_img"]) ? $context["map_img"] : null), "html", null, true));
         echo "\" />
   </div>
@@ -142,30 +141,30 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 </div>
 <strong>MySQL</strong><br />
 ";
-        // line 72
+        // line 71
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["database_test"]) ? $context["database_test"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
-            // line 73
-            echo "  ";
+            // line 72
+            echo "    <font class=\"body_text\">";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["item"], "html", null, true));
-            echo "<br />
+            echo "</font><br />
 ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 75
+        // line 74
         echo "<br />
 <br />
 <br />
 <small>Debug:</small><br />
 ";
-        // line 79
+        // line 78
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["debug_info"]) ? $context["debug_info"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["line"]) {
-            // line 80
+            // line 79
             echo "  <small>";
             echo $this->env->getExtension('sandbox')->ensureToStringAllowed($this->env->getExtension('drupal_core')->escapeFilter($this->env, $context["line"], "html", null, true));
             echo "</small><br />
@@ -188,7 +187,7 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 
     public function getDebugInfo()
     {
-        return array (  169 => 80,  165 => 79,  159 => 75,  150 => 73,  146 => 72,  138 => 67,  134 => 66,  125 => 59,  116 => 57,  112 => 56,  101 => 48,  97 => 47,  93 => 46,  87 => 43,  78 => 37,  74 => 36,  67 => 32,  63 => 31,  43 => 13,);
+        return array (  168 => 79,  164 => 78,  158 => 74,  149 => 72,  145 => 71,  137 => 66,  133 => 65,  124 => 58,  115 => 56,  111 => 55,  101 => 48,  97 => 47,  87 => 40,  83 => 39,  79 => 38,  73 => 35,  67 => 32,  63 => 31,  43 => 13,);
     }
 }
 /* {#*/
@@ -224,14 +223,6 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 /* <font size="5"><b>{{ subheading }}</b></font><br />*/
 /* <small>{{ timestamp }}</small><br /><br />*/
 /* <div>*/
-/*   <p>*/
-/*     <font class="body_text">*/
-/*       {{ summary.today|raw }}<br />*/
-/*       {{ summary.hr|raw }}<br />*/
-/*     </font>*/
-/*   </p>*/
-/* </div>*/
-/* <div>*/
 /*   <font class="body_title">Current conditions</font><br />*/
 /*   <img style="display: block; vertical-align: middle;  margin-right: 8px; float: left;" src="{{ current_icon }}" />*/
 /*     <span style="display: block; overflow: auto;">*/
@@ -242,15 +233,22 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 /*       </font>*/
 /*     </span>*/
 /*   </font>*/
-/*   <br />*/
-/*   <font class="body_title">Forecast</font>*/
-/*   <br />*/
-/*   <font class="body_text"><span style="line-height: 22px">*/
-/*   {% for hour in forecast %}*/
-/*     {{ hour|raw }}<br />*/
-/*   {% endfor %}*/
-/*   </span></font>*/
 /* </div>*/
+/* <p>*/
+/*   <font class="body_text"><br />*/
+/*     {{ summary.today|raw }}<br />*/
+/*     {{ summary.hr|raw }}<br />*/
+/*   </font>*/
+/* </p>*/
+/* <font class="body_title">Forecast</font>*/
+/* <br />*/
+/* <font class="body_text">*/
+/*   <span style="line-height: 22px">*/
+/*     {% for hour in forecast %}*/
+/*       {{ hour|raw }}<br />*/
+/*     {% endfor %}*/
+/*   </span>*/
+/* </font>*/
 /* <br />*/
 /* <div>*/
 /*   <font class="body_title">Radar</font>*/
@@ -263,7 +261,7 @@ class __TwigTemplate_661233ecb0ffe2929ba78fd3bfd1bdbd5cbd70a0d497642d26c7de225c6
 /* </div>*/
 /* <strong>MySQL</strong><br />*/
 /* {% for item in database_test %}*/
-/*   {{ item }}<br />*/
+/*     <font class="body_text">{{ item }}</font><br />*/
 /* {% endfor %}*/
 /* <br />*/
 /* <br />*/

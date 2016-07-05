@@ -1,0 +1,42 @@
+tennis_weather.settings:
+  type: mapping
+  label: 'Tennis Weather Checker global settings'
+  mapping:
+    tennis_weather:
+      type: mapping
+      mapping:
+        start_hr:
+          type: select
+          label: 'start hour for tennis'
+        end_hr:
+          type: select
+          label: 'end hour for tennis'
+        start_ampm:
+          type: select
+          label: 'start AM/PM for tennis'
+        end_ampm:
+          type: select
+          label: 'end AM/PM for tennis'
+        temp_warn:
+          type: text
+          label: 'warning temp'
+        temp_max:
+          type: text
+          label: 'max temp'
+        wind_warn:
+          type: text
+          label: 'warning wind speed'
+        wind_max:
+          type: text
+          label: 'max wind speed'
+        precip_warn:
+          type: text
+          label: 'warning precip %'
+        precip_max:
+          type: text
+          label: 'max precip %'
+# block.settings.loremipsum_block:
+#   type: block_settings
+#   label: 'Lorem ipsum block'
+#   mapping:
+#     loremipsum_block_settings:

@@ -1,0 +1,11 @@
+tennis_weather:
+  temp_warn: 90
+  temp_max: 94
+  wind_warn: 12
+  wind_max: 18
+  precip_warn: 30
+  precip_max: 40
+  start_hr: 8
+  end_hr: 10
+  start_ampm: AM
+  end_ampm: PM
