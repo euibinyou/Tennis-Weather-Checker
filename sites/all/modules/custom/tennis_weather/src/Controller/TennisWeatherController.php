@@ -154,6 +154,8 @@ class TennisWeatherController {
       $end_time += 12;
     }
 
+    $current_time = (int) $current_time;
+
     $offset = 0;
     if ($current_time >= $start_time && $current_time <= $end_time) {
       // If between start and end times, return number of hours to forecast for {current time} to end time (same day).
@@ -167,12 +169,11 @@ class TennisWeatherController {
     }
     elseif ($current_time <= $start_time) {
       // If earlier than start time, return number of hours to forecast for start time to end time (same day)
-      $offset =  $start_time - $current_time - 1;
+      $offset =  $start_time - $current_time;
     }
+
     $future_count = $end_time - $start_time + 1;
     return array($future_count, $offset);
-
-    // TODO: check if weekend, return ($future_count, $offset) accordingly
   }
 
   /**
