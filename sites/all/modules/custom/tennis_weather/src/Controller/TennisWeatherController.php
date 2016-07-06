@@ -167,7 +167,7 @@ class TennisWeatherController {
       // $offset = number of hours in Weather Underground API JSON response to skip to get to forecast for start time of next day
       $offset =  ($start_time + 23) - $current_time;
     }
-    elseif ($current_time <= $start_time) {
+    elseif ($current_time < $start_time) {
       // If earlier than start time, return number of hours to forecast for start time to end time (same day)
       $offset =  $start_time - $current_time;
     }
@@ -177,7 +177,8 @@ class TennisWeatherController {
   }
 
   /**
-   * Generate concise text summary  .
+   * Generate concise text summary.
+   * For now, just show precipitation amounts today and in the last hour.
    * @param assoc $json
    *
    * @return string $summary
