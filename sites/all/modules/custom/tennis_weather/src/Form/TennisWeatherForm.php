@@ -28,33 +28,7 @@ class TennisWeatherForm extends ConfigFormBase {
     // Default settings
     $config = $this->config('tennis_weather.settings');
 
-    // default date
-    //$date = '08:00 AM';
-    $date = '2016-07-01 08:00:00';
-    // 12-hr AM/PM
-    $format = 'g A';
-
-    //$options = array_combine(range(0,23),list(1,10));
-    //$options = array_combine(range(0,23),range(0,23));
-    // $form['hours'] = array(
-    //   '#type' => 'datetime',
-    //   '#title' => $this->t('Tennis-playing hours'),
-    //   '#default_value' => $date,
-    //   '#description' => $this->t('Start and end times for playing tennis.'),
-    //   '#date_label_position' => 'within',
-    //   '#date_format' => $format,
-    // );
-    //
-    // $form['hours'] = array(
-    //   '#type' => 'datetime',
-    //   '#title' => $this->t('datetime test'),
-    //   '#default_value' => $date,
-    //   '#description' => $this->t('datetime field type'),
-    //   '#date_format' => $format,
-    // );
-
     $hourOptions = array_combine(range(1,12),range(1,12));
-    //$ampmOptions = array_combine(array(t('AM'), t('PM')),array(t('AM'), t('PM')));
     $ampmOptions = array_combine(array('AM', 'PM'), array('AM', 'PM'));
 
     $form['start_hr'] = array(
@@ -133,7 +107,64 @@ class TennisWeatherForm extends ConfigFormBase {
    * {@inheritdoc}.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    $temp_max = $form_state->getValue('temp_max');
+    $temp_warn = $form_state->getValue('temp_warn');
+    $wind_max = $form_state->getValue('wind_max');
+    $wind_warn = $form_state->getValue('wind_warn');
+    $precip_max = $form_state->getValue('precip_max');
+    $precip_warn = $form_state->getValue('precip_warn');
+    $start_hr = $form_state->getValue('start_hr');
+    $start_ampm = $form_state->getValue('start_ampm');
+    $end_hr = $form_state->getValue('end_hr');
+    $end_ampm = $form_state->getValue('end_ampm');
 
+    if (!self::isStringVaildInt($temp_max) || !self::isStringVaildInt($temp_warn)) {
+      $form_state->setErrorByName(
+        'Temperature',
+        $this->t("You must enter an integer (max 3 digits).")
+      );
+  	}
+    if ($temp_warn > $temp_max) {
+      $form_state->setErrorByName(
+        'Temperature',
+        $this->t("Warning threshold is cannot be greater than max threshold!")
+      );
+    }
+
+    if (!self::isStringVaildInt($wind_max) || $wind_warn < 0 ||
+        !self::isStringVaildInt($wind_warn)) {
+      $form_state->setErrorByName(
+        'Wind',
+        $this->t("You must enter an integer 0 or higher (max 3 digits).")
+      );
+  	}
+    if ($wind_warn > $wind_max) {
+      $form_state->setErrorByName(
+        'Wind',
+        $this->t("Warning threshold is cannot be greater than max threshold!")
+      );
+    }
+
+    if (!self::isStringVaildInt($precip_max) || $precip_max > 100 || $precip_warn < 0 ||
+        !self::isStringVaildInt($precip_warn)) {
+      $form_state->setErrorByName(
+        'Precipitation',
+        $this->t("You must enter an integer between 0 and 100.")
+      );
+  	}
+    if ($precip_warn > $precip_max) {
+      $form_state->setErrorByName(
+        'Precipitation',
+        $this->t("Warning threshold is cannot be greater than max threshold!")
+      );
+    }
+
+    if (!self::validateHours($start_hr, $start_ampm, $end_hr, $end_ampm)) {
+      $form_state->setErrorByName(
+        'Playing hours',
+        $this->t("Start and end time range should be between 1 and 23 hours.")
+      );
+    }
   }
 
   /**
@@ -163,6 +194,46 @@ class TennisWeatherForm extends ConfigFormBase {
     return [
       'tennis_weather.settings',
     ];
+  }
+
+/**
+ * Check if start hour - end hour is a valid range.
+ * Valid if <= 24 hours.
+ * @param string $start_hr
+ * @param string $start_ampm
+ * @param string $end_hr
+ * @param string $end_ampm
+ * @return boolean
+ */
+  public function validateHours($start_hr, $start_ampm, $end_hr, $end_ampm) {
+    // convert 12-hr format to 24 format for range calculation
+    if ($start_ampm == 'PM') {
+      $start_hr += 12;
+    }
+    if ($end_ampm == 'PM') {
+      $end_hr += 12;
+    }
+
+    // range exceeds 23 hours
+    if (($end_hr - $start_hr) > 23) {
+      return False;
+    }
+
+    // range is less than 1 hour
+    if (($end_hr - $start_hr) < 1) {
+      return False;
+    }
+
+    return True;
+  }
+
+  /**
+   * Check if a given string represents a valid integer value (3 digit integer).
+   * @param string $string
+   * @return boolean
+   */
+  public function isStringVaildInt($string) {
+     return (1 === preg_match('/^-?\d{1,3}$/', $string));
   }
 
 }
