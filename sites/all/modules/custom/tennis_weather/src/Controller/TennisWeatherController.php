@@ -45,6 +45,13 @@ class TennisWeatherController {
     }
     $parsed_json = json_decode($response);
 
+    // Error handling if nothing returend from Weather Underground API
+    if ($parsed_json === NULL) {
+      drupal_set_message('Error: nothing returned from Weather Underground API (probably an internet connectivity problem)', 'error');
+      $element['#debug_info']['error'] = True;
+      return $element;
+    }
+
     // Error handling for Weather Underground API response
     if (property_exists($parsed_json->{'response'}, 'error')) {
       drupal_set_message('Error: ' . $parsed_json->{'response'}->{'error'}->{'description'}, 'error');
