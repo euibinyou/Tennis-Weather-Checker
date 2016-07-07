@@ -14,7 +14,7 @@ class TennisWeatherController {
   /**
    * Display weather for given zip.
    * This callback is mapped to the path
-   * 'loremipsum/{zip}'.
+   * 'tennis_weather/{zip}'.
    *
    * @param string $zip
    *   ZIP code of the area to check weather
@@ -44,6 +44,20 @@ class TennisWeatherController {
       watchdog_exception('weather API', $e->getMessage());
     }
     $parsed_json = json_decode($response);
+
+    // Error handling if nothing returend from Weather Underground API
+    if ($parsed_json === NULL) {
+      drupal_set_message('Error: nothing returned from Weather Underground API (probably an internet connectivity problem)', 'error');
+      $element['#debug_info']['error'] = True;
+      return $element;
+    }
+
+    // Error handling for Weather Underground API response
+    if (property_exists($parsed_json->{'response'}, 'error')) {
+      drupal_set_message('Error: ' . $parsed_json->{'response'}->{'error'}->{'description'}, 'error');
+      $element['#debug_info']['error'] = True;
+      return $element;
+    }
 
     $timezone = $parsed_json->{'current_observation'}->{'local_tz_long'};
     // Weather Underground API (radar - satellite)

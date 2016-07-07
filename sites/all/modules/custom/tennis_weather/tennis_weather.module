@@ -29,10 +29,12 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
                             'current_icon' => NULL,
                             'debug_info' => NULL,
                             'radar_gif' => NULL,
-                            'map_img' => NULL),
+                            'map_img' => NULL,
+                          ),
       'template' => 'tennis_weather',
     ),
   );
+
   return $variables;
 }
 
@@ -45,6 +47,11 @@ function tennis_weather_theme($existing, $type, $theme, $path) {
  *   - forecast
  */
 function template_preprocess_tennis_weather(&$variables) {
+  // If error, return without doing anything
+  if (array_key_exists('error', $variables['debug_info'])) {
+    return;
+  }
+
   // Load settings
   $config = \Drupal::config('tennis_weather.settings');
   $temp_max = $config->get('tennis_weather.temp_max');
@@ -141,7 +148,4 @@ function template_preprocess_tennis_weather(&$variables) {
   else {
     $variables['summary']['hr'] = sprintf($variables['summary']['hr']['string'], $variables['summary']['hr']['value']);
   }
-
-  $variables['debug_info'][] = 'Start: ' . $start_hr . ' ' . $start_ampm;
-  $variables['debug_info'][] = 'End: ' . $end_hr . ' ' . $end_ampm;
 }

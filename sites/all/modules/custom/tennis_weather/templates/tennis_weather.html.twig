@@ -28,53 +28,57 @@
   size: 4;
 }
 </style>
-<font size="5"><b>{{ subheading }}</b></font><br />
-<small>{{ timestamp }}</small><br /><br />
-<div>
-  <font class="body_title">Current conditions</font><br />
-  <img style="display: block; vertical-align: middle;  margin-right: 8px; float: left;" src="{{ current_icon }}" />
-    <span style="display: block; overflow: auto;">
-      <font class="body_text">
-        {{ current_cond.text }}<br />
-        Temperature: {{ current_cond.temp }} &deg;F<br />
-        Wind: {{ current_cond.precip }} mph<br />
-      </font>
+{% if debug_info.error %}
+  <font size="5"><b>Error!</b></font><br />
+{% else %}
+  <font size="5"><b>{{ subheading }}</b></font><br />
+  <small>{{ timestamp }}</small><br /><br />
+  <div>
+    <font class="body_title">Current conditions</font><br />
+    <img style="display: block; vertical-align: middle;  margin-right: 8px; float: left;" src="{{ current_icon }}" />
+      <span style="display: block; overflow: auto;">
+        <font class="body_text">
+          {{ current_cond.text }}<br />
+          Temperature: {{ current_cond.temp }} &deg;F<br />
+          Wind: {{ current_cond.precip }} mph<br />
+        </font>
+      </span>
+    </font>
+  </div>
+  <p>
+    <font class="body_text"><br />
+      {{ summary.today|raw }}<br />
+      {{ summary.hr|raw }}<br />
+    </font>
+  </p>
+  <font class="body_title">Forecast</font>
+  <br />
+  <font class="body_text">
+    <span style="line-height: 22px">
+      {% for hour in forecast %}
+        {{ hour|raw }}<br />
+      {% endfor %}
     </span>
   </font>
-</div>
-<p>
-  <font class="body_text"><br />
-    {{ summary.today|raw }}<br />
-    {{ summary.hr|raw }}<br />
-  </font>
-</p>
-<font class="body_title">Forecast</font>
-<br />
-<font class="body_text">
-  <span style="line-height: 22px">
-    {% for hour in forecast %}
-      {{ hour|raw }}<br />
-    {% endfor %}
-  </span>
-</font>
-<br />
-<div>
-  <font class="body_title">Radar</font>
   <br />
-  <div id="img_div">
-    <img id="img_base" src="{{ radar_gif }}" />
-    <img id="img_sat" src="{{ map_img }}" />
+  <div>
+    <font class="body_title">Radar</font>
+    <br />
+    <div id="img_div">
+      <img id="img_base" src="{{ radar_gif }}" />
+      <img id="img_sat" src="{{ map_img }}" />
+    </div>
+    <br /><br />
   </div>
-  <br /><br />
-</div>
-<strong>MySQL</strong><br />
-{% for item in database_test %}
-    <font class="body_text">{{ item }}</font><br />
-{% endfor %}
-<br />
-<br />
-<br />
-<small>Debug:</small><br />
-{% for line in debug_info %}
-  <small>{{ line }}</small><br />
-{% endfor %}
+  <strong>MySQL</strong><br />
+  {% for item in database_test %}
+      <font class="body_text">{{ item }}</font><br />
+  {% endfor %}
+  <br />
+  <br />
+  <br />
+  <small>Debug:</small><br />
+  {% for line in debug_info %}
+    <small>{{ line }}</small><br />
+  {% endfor %}
+{% endif %}

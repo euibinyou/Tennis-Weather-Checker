@@ -34,8 +34,8 @@ class LoremIpsumBlock extends BlockBase {
    }
 
    /**
- * {@inheritdoc}
- */
+   * {@inheritdoc}
+   */
 public function blockForm($form, FormStateInterface $form_state) {
 
   $form = parent::blockForm($form, $form_state);
@@ -45,7 +45,7 @@ public function blockForm($form, FormStateInterface $form_state) {
   return $form;
 }
 
-/**
+  /**
    * {@inheritdoc}
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
